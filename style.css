@@ -1,13 +1,11 @@
-/* ```css // filepath: c:\Users\fhagv\OneDrive\Документы\JavaScript\lekce 14\style.css */
 
-/* Reset */
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* CSS Variables for Light Mode */
 :root {
     --bg-color: #f4f7fc;
     --text-color: #333;
@@ -22,7 +20,7 @@
     --spinner-top: #1e88e5;
 }
 
-/* Dark Mode Variables */
+
 .dark {
     --bg-color: #121212;
     --text-color: #e0e0e0;
@@ -44,7 +42,7 @@ body {
     transition: background 0.3s, color 0.3s;
 }
 
-/* Header */
+
 header {
     display: flex;
     justify-content: space-between;
@@ -98,7 +96,7 @@ header button:hover {
     cursor: pointer;
 }
 
-/* Form */
+
 form {
     display: flex;
     justify-content: center;
@@ -129,7 +127,7 @@ button[type="submit"]:hover {
     background: #1565c0;
 }
 
-/* spinner base */
+
 .spinner {
     content: "";
     width: 60px;
@@ -141,7 +139,6 @@ button[type="submit"]:hover {
     margin: 1rem auto;
 }
 
-/* helper to hide elements when toggled via JS */
 .hidden {
     display: none !important;
 }
@@ -152,7 +149,7 @@ button[type="submit"]:hover {
     }
 }
 
-/* Gallery */
+
 .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -205,7 +202,7 @@ button[type="submit"]:hover {
     background: #ffeb3b;
 }
 
-/* Pagination */
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -228,7 +225,7 @@ button[type="submit"]:hover {
     background: #1565c0;
 }
 
-/* Modal */
+
 .modal {
     position: fixed;
     top: 0;
@@ -271,13 +268,13 @@ button[type="submit"]:hover {
 
 #close-modal {
     position: absolute;
-    top: 10px;
-    right: 15px;
+    top: 5px;
+    right: 5px;
     font-size: 1.5rem;
     cursor: pointer;
 }
 
-/* Animations */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -421,4 +418,11 @@ button[type="submit"]:hover {
         padding: 0.4rem 0.8rem;
         font-size: 0.9rem;
     }
+}
+
+.footer {
+    text-align: center;
+    padding: 5px;
+    font-size: 0.7rem;
+    color: var(--text-color);
 }

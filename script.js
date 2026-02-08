@@ -3,11 +3,10 @@ let currentPage = 1;
 let currentQuery = "";
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-// Theme and Language
 let currentTheme = localStorage.getItem("theme") || "light";
 let currentLanguage = localStorage.getItem("language") || "en";
 
-// Translations
+
 const translations = {
     en: {
         title: "Image Search",
@@ -47,7 +46,7 @@ const modalImage = document.getElementById("modal-image");
 const modalInfo = document.getElementById("modal-info");
 const closeModal = document.getElementById("close-modal");
 
-// spinner functions
+
 function showSpinner() {
   spinner.classList.remove("hidden");
 }
@@ -56,15 +55,13 @@ function hideSpinner() {
   spinner.classList.add("hidden");
 }
 
-// Fetch images
 async function fetchImages(query, page = 1) {
-  showSpinner(); // show spinner when search starts
+  showSpinner(); 
   try {
     const response = await fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${encodeURIComponent(query)}&image_type=photo&per_page=12&page=${page}`);
     const data = await response.json();
 
-    // wait for images to finish loading before hiding spinner
-    await displayImages(data.hits); // displayImages resolves when all images load/error
+    await displayImages(data.hits); 
     pageInfo.textContent = `Page ${page} of ${Math.ceil(data.totalHits / 12)}`;
     document.getElementById("pagination").classList.remove("hidden");
     document.getElementById("pagination").classList.remove("hidden");
@@ -75,8 +72,8 @@ async function fetchImages(query, page = 1) {
   }
 }
 
-// Display images
-// Returns a Promise that resolves once all image elements have either loaded or errored
+
+
 function displayImages(images) {
   gallery.innerHTML = "";
 
@@ -94,7 +91,7 @@ function displayImages(images) {
       imageEl.alt = img.tags || "";
       imageEl.src = img.webformatURL;
 
-      // resolve when image loads or errors
+      
       imageEl.addEventListener("load", () => resolve());
       imageEl.addEventListener("error", () => resolve());
 
@@ -114,13 +111,13 @@ function displayImages(images) {
     });
   });
 
-  // Wait until all images have fired load/error, then hide spinner
+ 
   return Promise.all(loadPromises).then(() => {
     hideSpinner();
   });
 }
 
-// Toggle favorite
+
 function toggleFavorite(img, btn) {
   if (favorites.some(f => f.id === img.id)) {
     favorites = favorites.filter(f => f.id !== img.id);
@@ -132,14 +129,14 @@ function toggleFavorite(img, btn) {
   localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
-// Show favorites
+
 favoritesBtn.addEventListener("click", () => {
   displayImages(favorites);
   pageInfo.textContent = `Favorites (${favorites.length})`;
   document.getElementById("pagination").classList.add("hidden");
 });
 
-// Modal
+
 function openModal(img) {
   modalImage.src = img.largeImageURL;
   modalInfo.innerHTML = `
@@ -155,19 +152,20 @@ closeModal.addEventListener("click", closeModalFunc);
 modal.addEventListener("click", e => { if(e.target===modal) closeModalFunc(); });
 document.addEventListener("keydown", e => { if(e.key==="Escape") closeModalFunc(); });
 
-// Form submit
+
 form.addEventListener("submit", e => {
   e.preventDefault();
   currentQuery = input.value;
   currentPage = 1;
   fetchImages(currentQuery, currentPage);
+  input.value = "";
 });
 
-// Pagination
+
 prevBtn.addEventListener("click", () => { if(currentPage>1){ currentPage--; fetchImages(currentQuery, currentPage); }});
 nextBtn.addEventListener("click", () => { currentPage++; fetchImages(currentQuery, currentPage); });
 
-// Theme Toggle
+
 const themeToggle = document.getElementById("theme-toggle");
 themeToggle.addEventListener("click", () => {
   currentTheme = currentTheme === "light" ? "dark" : "light";
@@ -175,7 +173,7 @@ themeToggle.addEventListener("click", () => {
   localStorage.setItem("theme", currentTheme);
 });
 
-// Language Select
+
 const languageSelect = document.getElementById("language-select");
 languageSelect.addEventListener("change", (e) => {
   currentLanguage = e.target.value;
@@ -183,27 +181,27 @@ languageSelect.addEventListener("change", (e) => {
   localStorage.setItem("language", currentLanguage);
 });
 
-// Apply Theme
+
 function applyTheme() {
   document.body.classList.toggle("dark", currentTheme === "dark");
   themeToggle.textContent = currentTheme === "light" ? "☀️" : "🌙";
 }
 
-// Apply Language
+
 function applyLanguage() {
   const t = translations[currentLanguage];
   document.querySelector('[data-key="title"]').textContent = t.title;
   document.querySelector('[data-key="favorites"]').textContent = t.favorites;
   input.placeholder = t.searchPlaceholder;
   document.querySelector('button[type="submit"]').textContent = t.search;
-  // Update page info if needed
+ 
   if (pageInfo.textContent.includes("Page")) {
     const pageMatch = pageInfo.textContent.match(/Page (\d+) of (\d+)/);
     if (pageMatch) {
       pageInfo.textContent = `${t.page} ${pageMatch[1]} of ${pageMatch[2]}`;
     }
   }
-  // Update modal labels
+
   if (modal.classList.contains("show")) {
     const img = modalImage.src ? { user: modalInfo.querySelector("p:nth-child(1)").textContent.split(": ")[1],
                                    tags: modalInfo.querySelector("p:nth-child(2)").textContent.split(": ")[1],
@@ -218,6 +216,6 @@ function applyLanguage() {
   }
 }
 
-// Initialize
+
 applyTheme();
 applyLanguage();
